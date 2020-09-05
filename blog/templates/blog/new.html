@@ -2,7 +2,7 @@
 {% block content %}
 
     <h2>Create Post</h2>
-    <form action="{% url 'new' %}" method="post">
+    <form action="{% url 'new' %}" method="post" class="form-group">
         {% csrf_token %}
         {{ post_form.as_p }}
         <button type="submit" class="btn btn-primary">Create</button>

@@ -1,9 +1,11 @@
 {% extends 'blog/main.html' %}
 {% block content %}
 
+<a class="btn btn-primary" href="{% url 'new' %}">+ New</a>
+<hr>
 {% if posts %}
     {% for post in posts %}
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-header">
             <h1><a href="{% url 'detail' post.id %}">{{ post.post_title }}</a></h1>
             <p>{{ post.created_at }}</p>
