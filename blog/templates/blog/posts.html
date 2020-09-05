@@ -1,0 +1,15 @@
+{% extends 'blog/main.html' %}
+{% block content %}
+
+{% if posts %}
+    {% for post in posts %}
+    <div class="card">
+        <h1 class="card-header">{{ post.post_title }}</h1>
+        <p class="card-body">{{ post.post_content }}</p>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>There's no posts! Please add</p>
+{% endif %}
+
+{% endblock %}
