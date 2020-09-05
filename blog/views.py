@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import Post
-from .forms import LoginForm, SignupForm
+from .forms import LoginForm, SignupForm, PostForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
 
 # Create your views here.
@@ -24,6 +26,37 @@ def post_detail(request, post_id):
     return render(request, 'blog/detail.html', {
         'post': post
     })
+
+
+@login_required(login_url='/login')
+def create_post(request):
+    if not request.user.is_authenticated:
+        return Http404
+    if request.method == 'POST':
+        post_form = PostForm(request.POST)
+        if post_form.is_valid:
+            post = Post(
+                post_content=request.POST['post_content'],
+                post_title=request.POST['post_title'],
+                author=request.user
+            )
+            post.save()
+            return redirect('posts')
+    else:
+        post_form = PostForm()
+    return render(request, 'blog/new.html', {'post_form': post_form})
+
+
+@login_required(login_url='/login')
+def delete_post(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    post.delete()
+    return redirect('posts')
+
+
+@login_required(login_url='/login')
+def edit_post(request):
+    pass
 
 
 def signup_page(request):

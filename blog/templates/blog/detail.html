@@ -2,6 +2,12 @@
 {% block content %}
 
     <h1>{{ post.post_title }}</h1>
+    <p>{{ post.author }}</p>
     <p>{{ post.post_title }}</p>
+
+    {% if user.is_authenticated and post.author.id == user.id %}
+    <button class="btn btn-success" href="{% url 'edit' post.id %}">Edit</button>
+    <a class="btn btn-danger" href="{% url 'delete' post.id %}">Delete</a>
+    {% endif %}
 
 {% endblock %}
