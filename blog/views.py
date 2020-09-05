@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Post
-from .forms import LoginForm
+from .forms import LoginForm, SignupForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
@@ -20,8 +20,23 @@ def all_posts(request):
 
 
 def signup_page(request):
+    if request.method == 'POST':
+        signup_form = SignupForm(request.POST)
+        if signup_form.is_valid:
+            user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'])
+            user.save()
+            return redirect('login')
+        else:
+            return render(request, 'blog/signup.html', {
+                'nav': 'signup',
+                'signup_form': signup_form
+            })
+
+    else:
+        signup_form = SignupForm()
     return render(request, 'blog/signup.html', {
-        'nav': 'signup'
+        'nav': 'signup',
+        'signup_form': signup_form
     })
 
 
