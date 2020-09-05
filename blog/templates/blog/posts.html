@@ -4,7 +4,10 @@
 {% if posts %}
     {% for post in posts %}
     <div class="card">
-        <h1 class="card-header">{{ post.post_title }}</h1>
+        <div class="card-header">
+            <h1><a href="{% url 'detail' post.id %}">{{ post.post_title }}</a></h1>
+            <p>{{ post.created_at }}</p>
+        </div>
         <p class="card-body">{{ post.post_content }}</p>
     </div>
     {% endfor %}

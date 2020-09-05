@@ -19,6 +19,13 @@ def all_posts(request):
     })
 
 
+def post_detail(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    return render(request, 'blog/detail.html', {
+        'post': post
+    })
+
+
 def signup_page(request):
     if request.method == 'POST':
         signup_form = SignupForm(request.POST)
