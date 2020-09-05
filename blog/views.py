@@ -55,8 +55,20 @@ def delete_post(request, post_id):
 
 
 @login_required(login_url='/login')
-def edit_post(request):
-    pass
+def edit_post(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    post_form = PostForm(initial={'post_title': post.post_title, 'post_content': post.post_content})
+    if not request.user.is_authenticated and post.author.id != request.user.id:
+        return Http404
+    if request.method == 'POST' and request.user.id == post.author.id:
+        post.post_content = request.POST['post_content']
+        post.post_title = request.POST['post_title']
+        post.save()
+        return redirect('posts')
+    return render(request, 'blog/edit.html', {
+        'post_form': post_form,
+        'post': post
+    })
 
 
 def signup_page(request):
